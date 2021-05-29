@@ -1,0 +1,6 @@
+[submodule "lib/TMCField"]
+	path = lib/TMCField
+	url = https://github.com/A-Bielefeld/TMCField.git
+[submodule "lib/TMCSerial"]
+	path = lib/TMCSerial
+	url = https://github.com/A-Bielefeld/TMCSerial.git
