@@ -3,10 +3,12 @@
 #include"TMCSerial.hpp"
 #include"TMC7300/TMC7300_Map.hpp"
 
+TMCSerial TMC7300(Serial1, 115200, 0);
+
 void setup() {
-  // put your setup code here, to run once:
+  TMC7300.begin();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  
 }
