@@ -36,8 +36,8 @@ typedef struct
         uint32_t data;
         uint8_t bytes[4];
     };
+    uint8_t checksum;
 } ComStack_Request;
-
 
 /* ComStack Reply Struct */
 typedef struct
@@ -50,6 +50,7 @@ typedef struct
         uint32_t data;
         uint8_t bytes[4];
     };
+    uint8_t checksum;
 } ComStack_Reply;
 
 #endif /* COMSTACK_HPP_ */
