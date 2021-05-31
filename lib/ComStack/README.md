@@ -6,10 +6,10 @@ Simple UART-Based communication tool.
 
 | Byte | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
 |---|---|---|---|---|---|---|---|---|---|
-| Request frame | Slave Address | Frame ID | Command | Channel | Register Address | Data [3] | Data [2] | Data [1] | Data [0] |
-| Reply Frame | | | Master Address | Frame ID | Status | Data [3] | Data [2] | Data [1] | Data [0] |
+| Request frame | Slave Address | Job ID | Command | Channel | Register Address | Data [3] | Data [2] | Data [1] | Data [0] |
+| Reply Frame | | | Master Address | Job ID | Status | Data [3] | Data [2] | Data [1] | Data [0] |
 
-Simple Master/Slave concept, Frame ID allows for asynchronous operation of the communication stack.
+Simple Master/Slave concept, Job ID allows for asynchronous operation of the communication stack.
 
 ### Addresses :
 
@@ -17,7 +17,7 @@ Slave addresses allow one master to control multiple slave modules. Master addre
 
 ### Frame ID :
 
-Frame ID is dictated by the master, which has the task of remembering the frame type until the request has been fulfilled.
+Job ID is dictated by the master, which has the task of remembering the frame type until the request has been fulfilled.
 
 ### Command byte :
 

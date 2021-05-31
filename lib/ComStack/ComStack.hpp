@@ -27,7 +27,7 @@
 typedef struct
 {
     uint8_t slaveAddr;
-    uint8_t frameID;
+    uint8_t jobID;
     uint8_t comStackCmd;
     uint8_t channel;
     uint8_t registerAddr;
@@ -43,7 +43,7 @@ typedef struct
 typedef struct
 {
     uint8_t masterAddr;
-    uint8_t frameID;
+    uint8_t jobID;
     uint8_t status;
     union
     {
