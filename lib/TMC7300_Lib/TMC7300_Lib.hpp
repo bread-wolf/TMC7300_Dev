@@ -66,8 +66,7 @@ class TMC7300
         uint32_t _senseResistor;
 
         /* Chopper configuration parameters */
-        uint8_t _freewheelModeA, _freewheelModeB;
-        uint8_t _pwmFreqA, _pwmFreqB;
+        uint8_t _freewheelMode, _pwmFreq, _blankTime;
         int16_t _pwmRatioA, _pwmRatioB;
 };
 
