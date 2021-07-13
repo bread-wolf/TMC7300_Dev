@@ -15,10 +15,29 @@
 #include"TMCSerial.hpp"
 #include"TMC7300/TMC7300_Map.hpp"
 
-enum class TMC7300_Motor
+enum class TMC7300_PwmFrequency
 {
+    FREQ_20K,   // 23.4kHz, Default, recommended value
+    FREQ_35K,   // 31.5kHz, Out of hearing range
+    FREQ_45K,   // 46.9kHz, For low inductance motors only
+    FREQ_58K,   // 58.5kHz, For low inductance motors only
+};
 
-}
+enum class TMC7300_FreewheelMode
+{
+    NO_FREEWHEEL,
+    FREEWHEEL,
+    SHORT_VIA_LS,
+    SHORT_VIA_HS,
+};
+
+enum class TMC7300_BlankTime
+{
+    CLK16,  // 1.3us typ. (Recommended)
+    CLK24,  // 2.0us typ. (Recommended)
+    CLK32,  // 2.6us typ.
+    CLK40,  // 3.3us typ.
+};
 
 class TMC7300
 {
