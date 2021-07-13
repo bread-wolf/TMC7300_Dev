@@ -48,10 +48,16 @@ class TMC7300
         /**/
         void setPwmFreq();
 
-    private:
-        /* Check chip is alive when calling begin() function. */
+        /**/
+        void setBlankTime();
+
+        /* Check chip is alive : 
+         *    - If chip is unconfigured, check version number
+         *    - If chip is configured, check error flag 
+         */
         bool isChipAlive();
 
+    private:
         /* Chip communication parameters */
         HardwareSerial& _serialPort;
         uint32_t _baudrate;
