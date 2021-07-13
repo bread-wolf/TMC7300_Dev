@@ -84,7 +84,7 @@ class TMC7300
         uint8_t _enablePin;
 
         /* Driver state and statuses */
-        bool _isConfigured;
+        bool _isConfigured, _isAlive;
 
         /* Basic chip configuration */
         bool _useExtcap, _useParallel;
