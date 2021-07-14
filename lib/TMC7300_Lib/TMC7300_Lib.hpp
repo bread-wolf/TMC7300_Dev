@@ -55,7 +55,7 @@ class TMC7300 : private TMCSerial
          * This function return false and does nothing is configDriver wasn't called first.
          *
          * This function acts on the selected enable pin, as well as internal enable bit. */
-        bool enableDriver(bool enable);
+        void enableDriver(bool enable);
 
         /* Set desired freewheel/breaking mode, to activate freewheeling use the enable function. */
         void setFreewheelMode(TMC7300_FreewheelMode mode);

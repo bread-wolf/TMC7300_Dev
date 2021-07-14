@@ -38,6 +38,22 @@ bool TMC7300::begin()
     return true;
 }
 
+
+void TMC7300::enableDriver(bool enable)
+{
+    /* Enable or disable driver. */
+    if (enable)
+    {
+        digitalWrite(_enablePin, HIGH);
+    }
+    else
+    {
+        digitalWrite(_enablePin, LOW);
+    }
+    
+    TMCSerial::writeField(TMC7300_ENABLEDRV, enable);
+}
+
 bool TMC7300::isChipAlive()
 {
     if (_isConfigured != true)
