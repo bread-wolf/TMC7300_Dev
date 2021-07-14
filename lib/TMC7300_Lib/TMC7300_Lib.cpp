@@ -14,5 +14,21 @@ TMC7300::TMC7300(HardwareSerial& serialPort, uint32_t baudrate, uint8_t chipAddr
 
 bool TMC7300::begin()
 {
+    /* Call base class begin() to set up UART peripheral. */
+    TMCSerial::begin();
+
+    /* Check that chip is alive. */
+    
+
+    /* Set up enable pin. */
+    pinMode(_enablePin, OUTPUT);
+
+    /* Completely disable driver. */
+    digitalWrite(_enablePin, LOW);
+    TMCSerial::writeField(TMC7300_ENABLEDRV, false);
+
+    /* Write default parameters. */
+    TMCSerial::writeField();
+
 
 }
