@@ -39,7 +39,7 @@ enum class TMC7300_BlankTime
     CLK40,  // 3.3us typ.
 };
 
-class TMC7300
+class TMC7300 : private TMCSerial
 {
     public:
         /* Creates instance, sets up default configuration. */
@@ -77,10 +77,7 @@ class TMC7300
         bool isChipAlive();
 
     private:
-        /* Chip communication parameters */
-        HardwareSerial& _serialPort;
-        uint32_t _baudrate;
-        uint8_t _chipAddress;
+        /* Driver enable pin */
         uint8_t _enablePin;
 
         /* Driver state and statuses */

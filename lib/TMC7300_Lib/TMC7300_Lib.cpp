@@ -7,8 +7,12 @@
 
 #include "TMC7300_Lib.hpp"
 TMC7300::TMC7300(HardwareSerial& serialPort, uint32_t baudrate, uint8_t chipAddress, uint8_t enablePin)
-    : _serialPort(serialPort), _baudrate(baudrate), _chipAddress(chipAddress), _enablePin(enablePin),
-    
+    : TMCSerial(serialPort, baudrate, chipAddress), _enablePin(enablePin), _isConfigured(false), _isAlive(false)
+{
+
+}
+
+bool TMC7300::begin()
 {
 
 }
