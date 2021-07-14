@@ -57,18 +57,16 @@ class TMC7300 : private TMCSerial
          * This function acts on the selected enable pin, as well as internal enable bit. */
         bool enableDriver(bool enable);
 
-        /* */
-        void setPWM();
-        void getPWM();
+        /* Set desired freewheel/breaking mode, to activate freewheeling use the enable function. */
+        void setFreewheelMode(TMC7300_FreewheelMode mode);
+        void enableFreewheelMode(bool enable);
 
-        /**/
-        void setFreewheelMode();
+        /* Set motor PWM frequency, see enum for possible options. */
+        void setPwmFreq(TMC7300_PwmFrequency freq);
 
-        /**/
-        void setPwmFreq();
-
-        /**/
-        void setBlankTime();
+        /* Set comparator blank time, to correctly measure current.
+         * Ignore comparator after switching event for blankTime to filter out ringing. */
+        void setBlankTime(TMC7300_BlankTime blankTime);
 
         /* Check chip is alive : 
          *    - If chip is unconfigured, check version number
