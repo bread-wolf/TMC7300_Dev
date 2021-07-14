@@ -45,7 +45,7 @@ class TMC7300 : private TMCSerial
         /* Creates instance, sets up default configuration. */
         TMC7300(HardwareSerial& serialPort, uint32_t baudrate, uint8_t chipAddress, uint8_t enablePin);
 
-        /* Checks driver is present, put driver in safe state for configuration. */
+        /* Checks driver is present, put driver in a disabled safe state for configuration. */
         bool begin();
 
         /* Set up mandatory system parameters. Driver can't be enabled unless this function was called. */
