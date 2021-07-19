@@ -28,8 +28,7 @@ bool TMC7300::begin()
     pinMode(_enablePin, OUTPUT);
 
     /* Completely disable driver. */
-    digitalWrite(_enablePin, LOW);
-    TMCSerial::writeField(TMC7300_ENABLEDRV, false);
+    enableDriver(false);
 
     /* Write fundamental parameters. */
     TMCSerial::writeField(TMC7300_PWM_DIRECT, true);
