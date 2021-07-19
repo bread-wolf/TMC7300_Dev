@@ -79,7 +79,7 @@ class TMC7300 : private TMCSerial
         uint8_t _enablePin;
 
         /* Driver state and statuses */
-        bool _isConfigured, _isAlive;
+        bool _isConfigured;
 
         /* Basic chip configuration */
         bool _useExtcap, _useParallel;
