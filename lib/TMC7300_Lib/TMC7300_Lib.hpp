@@ -91,15 +91,6 @@ class TMC7300 : private TMCSerial
 
         /* Driver state and statuses */
         bool _isConfigured;
-
-        /* Basic chip configuration */
-        bool _useExtcap, _useParallel;
-        uint32_t _senseResistor, _currentLim;
-
-        /* Chopper configuration parameters */
-        bool _isFreeWheelEnabled;
-        uint8_t _freewheelMode, _pwmFreq, _blankTime;
-        int16_t _pwmRatioA, _pwmRatioB;
 };
 
 

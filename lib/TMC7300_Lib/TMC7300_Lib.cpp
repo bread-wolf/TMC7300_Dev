@@ -15,7 +15,7 @@
 
 
 TMC7300::TMC7300(HardwareSerial& serialPort, uint32_t baudrate, uint8_t chipAddress, uint8_t enablePin)
-    : TMCSerial(serialPort, baudrate, chipAddress), _enablePin(enablePin), _isConfigured(false), _isFreeWheelEnabled(false)
+    : TMCSerial(serialPort, baudrate, chipAddress), _enablePin(enablePin), _isConfigured(false)
 {
 
 }
@@ -65,17 +65,10 @@ uint32_t TMC7300::configDriver(bool useExtcap, bool useParallel, uint32_t senseR
         senseResistor = TMC7300_MIN_RSENSE;
     }
 
-    /* Save values in class attribute. */
-    _useExtcap = useExtcap;
-    _useParallel = useParallel;
-
     /* Calculate current scaling and actual current limit. */
     currentDivider = (currentLim * 32 * (senseResistor + 30) / TMC7300_V_FULLSCALE * 1000) - 1;
     if (currentDivider > 32)
         currentDivider = 32;
-
-    _currentLim = ((currentDivider + 1) * TMC7300_V_FULLSCALE) * 1000 / (32 * (_senseResistor + 30));
-    _senseResistor = senseResistor;
     
     /* Set parameters */
     TMCSerial::writeField(TMC7300_EXTCAP, useExtcap);
@@ -84,7 +77,7 @@ uint32_t TMC7300::configDriver(bool useExtcap, bool useParallel, uint32_t senseR
 
     /* Return and store actual current limit and set config flag to true. */
     _isConfigured = true;
-    return _currentLim;
+    return ((currentDivider + 1) * TMC7300_V_FULLSCALE) * 1000 / (32 * (senseResistor + 30));
 }
 
 void TMC7300::enableDriver(bool enable)
@@ -123,25 +116,21 @@ void TMC7300::setPWM(int16_t PWM)
 void TMC7300::setFreewheelMode(TMC7300_FreewheelMode mode)
 {
     TMCSerial::writeField(TMC7300_FREEWHEEL, mode);
-    _freewheelMode = mode;
 }
 
 void TMC7300::enableFreewheelMode(bool enable)
 {
     TMCSerial::writeField(TMC7300_MOTORRUN, !enable);
-    _isFreeWheelEnabled = !enable;
 }
 
 void TMC7300::setPwmFreq(TMC7300_PwmFrequency freq)
 {
     TMCSerial::writeField(TMC7300_TBL, freq);
-    _pwmFreq = freq;
 }
 
 void TMC7300::setBlankTime(TMC7300_BlankTime blankTime)
 {
     TMCSerial::writeField(TMC7300_TBL, blankTime);
-    _blankTime = blankTime;
 }
 
 bool TMC7300::isChipAlive()
