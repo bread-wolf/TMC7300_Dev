@@ -15,7 +15,7 @@
 
 
 TMC7300::TMC7300(HardwareSerial& serialPort, uint32_t baudrate, uint8_t chipAddress, uint8_t enablePin)
-    : TMCSerial(serialPort, baudrate, chipAddress), _enablePin(enablePin), _isConfigured(false)
+    : TMCSerial(serialPort, baudrate, chipAddress), _enablePin(enablePin), _isConfigured(false), _isFreeWheelEnabled(false)
 {
 
 }
@@ -106,6 +106,30 @@ void TMC7300::enableDriver(bool enable)
     }
     
     TMCSerial::writeField(TMC7300_ENABLEDRV, enable);
+}
+
+void TMC7300::setFreewheelMode(TMC7300_FreewheelMode mode)
+{
+    TMCSerial::writeField(TMC7300_FREEWHEEL, mode);
+    _freewheelMode = mode;
+}
+
+void TMC7300::enableFreewheelMode(bool enable)
+{
+    TMCSerial::writeField(TMC7300_MOTORRUN, !enable);
+    _isFreeWheelEnabled = !enable;
+}
+
+void TMC7300::setPwmFreq(TMC7300_PwmFrequency freq)
+{
+    TMCSerial::writeField(TMC7300_TBL, freq);
+    _pwmFreq = freq;
+}
+
+void TMC7300::setBlankTime(TMC7300_BlankTime blankTime)
+{
+    TMCSerial::writeField(TMC7300_TBL, blankTime);
+    _blankTime = blankTime;
 }
 
 bool TMC7300::isChipAlive()

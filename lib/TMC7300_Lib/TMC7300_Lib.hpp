@@ -62,7 +62,8 @@ class TMC7300 : private TMCSerial
          * This function acts on the selected enable pin, as well as internal enable bit. */
         void enableDriver(bool enable);
 
-        /* Set desired freewheel/breaking mode, to activate freewheeling use the enable function. */
+        /* Set desired freewheel/breaking mode, to activate freewheeling use the enable function.
+         * This is mostly used for passive braking. */
         void setFreewheelMode(TMC7300_FreewheelMode mode);
         void enableFreewheelMode(bool enable);
 
@@ -91,6 +92,7 @@ class TMC7300 : private TMCSerial
         uint32_t _senseResistor, _currentLim;
 
         /* Chopper configuration parameters */
+        bool _isFreeWheelEnabled;
         uint8_t _freewheelMode, _pwmFreq, _blankTime;
         int16_t _pwmRatioA, _pwmRatioB;
 };
