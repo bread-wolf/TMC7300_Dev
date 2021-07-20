@@ -30,7 +30,8 @@ bool TMC7300::begin()
     pinMode(_enablePin, OUTPUT);
 
     /* Completely disable driver. */
-    enableDriver(false);
+    digitalWrite(_enablePin, LOW);
+    writeField(TMC7300_ENABLEDRV, false);
 
     /* Write fundamental parameters. */
     TMCSerial::writeField(TMC7300_PWM_DIRECT, true);
@@ -82,6 +83,12 @@ uint32_t TMC7300::configDriver(bool useExtcap, bool useParallel, uint32_t senseR
 
 void TMC7300::enableDriver(bool enable)
 {
+    if (!_isConfigured)
+    {
+        /* If the driver wasn't configured, it is not safe to enable it. */
+        return;
+    }
+
     /* Enable or disable driver. */
     if (enable)
     {
