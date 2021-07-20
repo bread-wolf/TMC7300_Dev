@@ -108,6 +108,18 @@ void TMC7300::enableDriver(bool enable)
     TMCSerial::writeField(TMC7300_ENABLEDRV, enable);
 }
 
+void TMC7300::setPWM(int16_t PWM_A, int16_t PWM_B)
+{
+    TMCSerial::writeField(TMC7300_PWM_A, PWM_A);
+    TMCSerial::writeField(TMC7300_PWM_B, PWM_B);
+}
+
+void TMC7300::setPWM(int16_t PWM)
+{
+    TMCSerial::writeField(TMC7300_PWM_A, PWM);
+    TMCSerial::writeField(TMC7300_PWM_B, 0);
+}
+
 void TMC7300::setFreewheelMode(TMC7300_FreewheelMode mode)
 {
     TMCSerial::writeField(TMC7300_FREEWHEEL, mode);

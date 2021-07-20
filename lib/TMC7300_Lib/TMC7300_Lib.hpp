@@ -62,6 +62,11 @@ class TMC7300 : private TMCSerial
          * This function acts on the selected enable pin, as well as internal enable bit. */
         void enableDriver(bool enable);
 
+        /* Set PWM ratio for both motors.
+         * Value varies from -255 to +255. */
+        void setPWM(int16_t PWM_A, int16_t PWM_B); // In parallel mode, only PWM_A is used.
+        void setPWM(int16_t PWM);                  // In non-parallel mode, PWM A and B get the same value.
+
         /* Set desired freewheel/breaking mode, to activate freewheeling use the enable function.
          * This is mostly used for passive braking. */
         void setFreewheelMode(TMC7300_FreewheelMode mode);
