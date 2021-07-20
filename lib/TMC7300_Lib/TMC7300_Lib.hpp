@@ -48,8 +48,13 @@ class TMC7300 : private TMCSerial
         /* Checks driver is present, put driver in a disabled safe state for configuration. */
         bool begin();
 
-        /* Set up mandatory system parameters. Driver can't be enabled unless this function was called. */
-        bool configDriver(bool useExtcap, bool useParallel, uint32_t senseResistor);
+        /* Set up mandatory system parameters. Driver can't be enabled unless this function was called. 
+         * Returns actual current limit value in mA.
+         * 
+         * senseResistor [mOhm]
+         * currentLim    [mA] 
+         */
+        uint32_t configDriver(bool useExtcap, bool useParallel, uint32_t senseResistor, uint32_t currentLim);
 
         /* After creating object and calling begin(), driver is disabled and in safe state.
          * This function return false and does nothing is configDriver wasn't called first.
@@ -83,7 +88,7 @@ class TMC7300 : private TMCSerial
 
         /* Basic chip configuration */
         bool _useExtcap, _useParallel;
-        uint32_t _senseResistor;
+        uint32_t _senseResistor, _currentLim;
 
         /* Chopper configuration parameters */
         uint8_t _freewheelMode, _pwmFreq, _blankTime;

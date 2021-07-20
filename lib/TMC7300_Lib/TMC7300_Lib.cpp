@@ -7,7 +7,9 @@
 
 #include "TMC7300_Lib.hpp"
 
-#define TMC7300_VERSION_BYTE    0x40
+#define TMC7300_VERSION_BYTE    0x40  /* Chip version */
+#define TMC7300_V_FULLSCALE     325   /* Full scale voltage for torque limiter */
+
 
 TMC7300::TMC7300(HardwareSerial& serialPort, uint32_t baudrate, uint8_t chipAddress, uint8_t enablePin)
     : TMCSerial(serialPort, baudrate, chipAddress), _enablePin(enablePin), _isConfigured(false)
@@ -37,6 +39,46 @@ bool TMC7300::begin()
     return true;
 }
 
+uint32_t TMC7300::configDriver(bool useExtcap, bool useParallel, uint32_t senseResistor, uint32_t currentLim)
+{
+    uint8_t currentDivider;
+
+    /* Limit some input values. */
+    if ((currentLim > 2400) && (useParallel))
+    {
+        /* In parallel mode, current can go up to 2.4 Amps */
+        currentLim = 2400;
+    }
+    if ((currentLim > 1400) && (!useParallel))
+    {
+        /* Current limit is lower when using 2 motors. */
+        currentLim = 1400;
+    }
+
+    if (senseResistor < 80)
+    {
+        /* Sense resistor value should not go under 100mOhm */
+        senseResistor = 80;
+    }
+
+    /* Save values in class attribute. */
+    _useExtcap = useExtcap;
+    _useParallel = useParallel;
+
+    /* Calculate current scaling, and set default current limit to */
+    currentDivider = (currentLim * 32 * (senseResistor + 30) / TMC7300_V_FULLSCALE) - 1;
+    _currentLim = ((currentDivider + 1) * TMC7300_V_FULLSCALE) / (32 * (_senseResistor + 30));
+    _senseResistor = senseResistor;
+    
+    /* Set parameters */
+    TMCSerial::writeField(TMC7300_EXTCAP, useExtcap);
+    TMCSerial::writeField(TMC7300_PAR_MODE, useParallel);
+    TMCSerial::writeField(TMC7300_IRUN, currentDivider);
+
+    /* Return and store actual current limit and set config flag to true. */
+    _isConfigured = true;
+    return _currentLim;
+}
 
 void TMC7300::enableDriver(bool enable)
 {
