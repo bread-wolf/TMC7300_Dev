@@ -7,8 +7,11 @@
 
 #include "TMC7300_Lib.hpp"
 
-#define TMC7300_VERSION_BYTE    0x40  /* Chip version */
-#define TMC7300_V_FULLSCALE     325   /* Full scale voltage for torque limiter */
+#define TMC7300_VERSION_BYTE    0x40  /* Chip version. */
+#define TMC7300_V_FULLSCALE     325   /* Full scale voltage for torque limiter. */
+#define TMC7300_MAX_CURR_PAR    2000  /* Max motor current in parallel mode. */
+#define TMC7300_MAX_CURR_STD    1200  /* Max motor current in two motor mode. */
+#define TMC7300_MIN_RSENSE      80    /* Minimum recommended value for R_sense. */
 
 
 TMC7300::TMC7300(HardwareSerial& serialPort, uint32_t baudrate, uint8_t chipAddress, uint8_t enablePin)
@@ -45,30 +48,33 @@ uint32_t TMC7300::configDriver(bool useExtcap, bool useParallel, uint32_t senseR
     uint8_t currentDivider;
 
     /* Limit some input values. */
-    if ((currentLim > 2400) && (useParallel))
+    if ((currentLim > TMC7300_MAX_CURR_PAR) && (useParallel))
     {
-        /* In parallel mode, current can go up to 2.4 Amps */
-        currentLim = 2400;
+        /* In parallel mode, current can go up to 2 Amps */
+        currentLim = TMC7300_MAX_CURR_PAR;
     }
-    if ((currentLim > 1400) && (!useParallel))
+    if ((currentLim > TMC7300_MAX_CURR_STD) && (!useParallel))
     {
         /* Current limit is lower when using 2 motors. */
-        currentLim = 1400;
+        currentLim = TMC7300_MAX_CURR_STD;
     }
 
-    if (senseResistor < 80)
+    if (senseResistor < TMC7300_MIN_RSENSE)
     {
         /* Sense resistor value should not go under 100mOhm */
-        senseResistor = 80;
+        senseResistor = TMC7300_MIN_RSENSE;
     }
 
     /* Save values in class attribute. */
     _useExtcap = useExtcap;
     _useParallel = useParallel;
 
-    /* Calculate current scaling, and set default current limit to */
-    currentDivider = (currentLim * 32 * (senseResistor + 30) / TMC7300_V_FULLSCALE) - 1;
-    _currentLim = ((currentDivider + 1) * TMC7300_V_FULLSCALE) / (32 * (_senseResistor + 30));
+    /* Calculate current scaling and actual current limit. */
+    currentDivider = (currentLim * 32 * (senseResistor + 30) / TMC7300_V_FULLSCALE * 1000) - 1;
+    if (currentDivider > 32)
+        currentDivider = 32;
+
+    _currentLim = ((currentDivider + 1) * TMC7300_V_FULLSCALE) * 1000 / (32 * (_senseResistor + 30));
     _senseResistor = senseResistor;
     
     /* Set parameters */
